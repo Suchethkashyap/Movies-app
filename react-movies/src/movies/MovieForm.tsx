@@ -16,6 +16,7 @@ import { movieTheaterDTO } from "../movietheaters/MovieTheater.model";
 import TypeAheadActor from "../forms/TypeAheadActors";
 import { actorMovieDTO } from "../actors/actors.model";
 import MarkdownField from "../forms/MarkdownField";
+import React from "react";
 
 export default function MovieForm(props: movieFormProps) {
   const [selectedGenres, setSelectedGenres] = useState(
