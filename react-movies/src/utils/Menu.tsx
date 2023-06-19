@@ -1,11 +1,13 @@
 import { NavLink } from "react-router-dom";
 import "./Menu.css";
+import logo from '../assets/navbar_logo.jpg';
+
 export default function Menu() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light">
+    <nav className="navbar navbar-expand-lg navbar-light ">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/">
-          <img src="http://clipart-library.com/newhp/art-film-logo-cinema-clip-art-png-favpng-UWCDJLxCMutv9uywQZpVfqmsC.jpg" alt="React Movies Logo" className="logo" />
+          <img src={logo} alt="React Movies Logo" className="logo" />
           React Movies
         </NavLink>
         <button

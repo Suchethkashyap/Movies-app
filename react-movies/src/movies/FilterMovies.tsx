@@ -11,7 +11,7 @@ import Pagination from "../utils/Pagination";
 
 export default function FilterMovies() {
   const initialValues: filterMoviesForm = {
-    title: " ",
+    title: "",
     GenreIds: 0,
     upcomingReleases: false,
     inTheaters: false,
@@ -25,41 +25,12 @@ export default function FilterMovies() {
   const query = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
-      .get(`${urlGenres}/all`)
-      .then((response: AxiosResponse<genreDTO[]>) => {
-        setGenres(response.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (query.get('title')){
-        initialValues.title = query.get('title')!;
-    }
-    if (query.get('GenreIds')){
-        initialValues.GenreIds = parseInt(query.get('GenreIds')!,10);
-    }
-    if (query.get('upcomingReleases')){
-        initialValues.upcomingReleases = true;
-    }
-    if (query.get('inTheaters')){
-        initialValues.inTheaters = true;
-    }
-    if (query.get('page')){
-        initialValues.page = parseInt(query.get('page')!,10);
-    }
-
-
-    searchMovies(initialValues);
-  }, []);
-
   function searchMovies(values: filterMoviesForm) {
     modifyURL(values);
     axios
       .get(`${urlMovies}/filter`, { params: values })
       .then((response: AxiosResponse<movieDTO[]>) => {
-        const records = parseInt(response.headers['totalamountofrecords'],10);
+        const records = parseInt(response.headers["totalamountofrecords"], 10);
         setTotalAmountOfPages(Math.ceil(records / values.recordsPerPage));
         setMovies(response.data);
       });
@@ -87,8 +58,36 @@ export default function FilterMovies() {
     navigate(`/movies/filter?${queryString.join("&")}`);
   }
 
+  useEffect(() => {
+    axios
+      .get(`${urlGenres}/all`)
+      .then((response: AxiosResponse<genreDTO[]>) => {
+        setGenres(response.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (query.get("title")) {
+      initialValues.title = query.get("title")!;
+    }
+    if (query.get("GenreIds")) {
+      initialValues.GenreIds = parseInt(query.get("GenreIds")!, 10);
+    }
+    if (query.get("upcomingReleases")) {
+      initialValues.upcomingReleases = true;
+    }
+    if (query.get("inTheaters")) {
+      initialValues.inTheaters = true;
+    }
+    if (query.get("page")) {
+      initialValues.page = parseInt(query.get("page")!, 10);
+    }
+
+    searchMovies(initialValues);
+  }, []);
+
   return (
-    <div className="container" >
+    <div className="container">
       <h3>Filter Movies</h3>
       <Formik
         initialValues={initialValues}
@@ -171,10 +170,14 @@ export default function FilterMovies() {
             </Form>
 
             <MoviesList movies={movies} />
-            <Pagination totalAmountOfPages={totalAmountOfPages} onChange={newPage => {
-               formikProps.values.page = newPage;
-               searchMovies(formikProps.values); 
-            }} currentPage={formikProps.values.page} />
+            <Pagination
+              totalAmountOfPages={totalAmountOfPages}
+              onChange={(newPage) => {
+                formikProps.values.page = newPage;
+                searchMovies(formikProps.values);
+              }}
+              currentPage={formikProps.values.page}
+            />
           </>
         )}
       </Formik>
